@@ -1,16 +1,24 @@
 // Refactor this code
 
 function getURL(dev = false, tasks = {}) {
-    let url = dev
-        ? `/tasks?status=ACTIVE&dev=true&size=20`
-        : '/tasks';
+    let url = dev ? '/tasks?status=ACTIVE&dev=true&size=20' : '/tasks';
+    let queryParams = [];
 
+    // Checking nextTasks is present or not???
     if (tasks.nextTasks) {
-        url += '?hasNext=true';
+        queryParams.push('hasNext=true');
     }
 
     if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
+        queryParams.push('hasPrev=true');
     }
+
+    // if queryParams has values just added them in...
+    if (queryParams.length > 0) {
+        const separator = url.includes('?') ? '&' : '?';
+        url += separator + queryParams.join('&');
+    }
+
     return { url };
 }
+
